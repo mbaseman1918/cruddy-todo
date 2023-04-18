@@ -41,17 +41,17 @@ exports.readAll = (callback) => {
     }
   });
 
-
-
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  const toDoDir = `${exports.dataDir}/${id}.txt`;
+  fs.readFile(toDoDir, (err, data) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, { id, text: data.toString()});
+    }
+  });
 };
 
 exports.update = (id, text, callback) => {
