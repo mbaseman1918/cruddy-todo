@@ -55,24 +55,37 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  const toDoDir = `${exports.dataDir}/${id}.txt`;
+  fs.readFile(toDoDir, (err, data) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      fs.writeFile(toDoDir, text, (err) => {
+        if (err) {
+          console.log('Error Writing File: ', err);
+        } else {
+          items[id] = text;
+          callback(null, { id, text });
+        }
+      });
+    }
+  });
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+  console.log(id);
+
+  fs.unlink()
+
+
+// var item = items[id];
+//   delete items[id];
+//   if (!item) {
+//     // report an error if item not found
+//     callback(new Error(`No item with id: ${id}`));
+//   } else {
+//     callback();
+//   }
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
