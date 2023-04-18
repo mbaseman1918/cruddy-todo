@@ -25,7 +25,6 @@ exports.create = (text, callback) => {
       });
     }
   });
-
 };
 
 exports.readAll = (callback) => {
