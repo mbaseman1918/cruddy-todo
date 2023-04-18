@@ -3,10 +3,11 @@ const path = require('path');
 const _ = require('underscore');
 const counter = require('./counter');
 
+const sprintf = require('sprintf-js').sprintf;
+
 var items = {};
 
 // Public API - Fix these CRUD functions ///////////////////////////////////////
-
 exports.create = (text, callback) => {
 
   let id = counter.getNextUniqueId((err, id) => {
@@ -28,10 +29,20 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+
+  fs.readdir(exports.dataDir, (err, files) => {
+    if (err) {
+      console.log('You got an error');
+    } else {
+      var data = _.map(files, (text, id) => {
+        return { id: text.slice(0, 5), text: text.slice(0, 5) };
+      });
+      callback(null, data);
+    }
   });
-  callback(null, data);
+
+
+
 };
 
 exports.readOne = (id, callback) => {
